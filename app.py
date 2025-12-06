@@ -1,5 +1,7 @@
 import streamlit as st
 from pathlib import Path
+import io
+import zipfile
 
 from graph import agent
 from states import Plan, TaskPlan, CoderState
@@ -20,13 +22,12 @@ def to_dict(maybe_model):
     if hasattr(maybe_model, "model_dump"):
         return maybe_model.model_dump()
     if hasattr(maybe_model, "dict"):
-        # older Pydantic versions
         return maybe_model.dict()
     return {"value": str(maybe_model)}
 
 
 def main():
-    st.set_page_config(page_title="Dev Agent UI", layout="wide")
+    st.set_page_config(page_title="Multi-Agent App Builder", layout="wide")
     st.title("Multi-Agent App Builder")
 
     st.write(
@@ -124,6 +125,20 @@ def main():
     if not file_list:
         st.info("No files found yet. Run the agents to generate a project.")
         return
+
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+        for file_path in PROJECT_ROOT.rglob("*"):
+            if file_path.is_file():
+                zf.write(file_path, arcname=file_path.relative_to(PROJECT_ROOT))
+    zip_buffer.seek(0)
+
+    st.download_button(
+        "Download project as ZIP",
+        data=zip_buffer,
+        file_name="generated_project.zip",
+        mime="application/zip",
+    )
 
     col_files, col_view = st.columns([1, 2])
 
