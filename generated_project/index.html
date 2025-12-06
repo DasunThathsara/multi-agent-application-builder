@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorfulTodo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>ColorfulTodo</h1>
+        </header>
+        <section id="input-section">
+            <input id="new-todo" type="text" placeholder="What needs to be done?" autocomplete="off" />
+            <button id="add-btn">Add</button>
+        </section>
+        <nav id="toolbar" aria-label="Todo filters">
+            <button class="filter" data-filter="all">All</button>
+            <button class="filter" data-filter="active">Active</button>
+            <button class="filter" data-filter="completed">Completed</button>
+        </nav>
+        <ul id="todo-list" class="todo-list" role="list"></ul>
+        <footer>
+            <small>Made with ❤️ using ColorfulTodo</small>
+        </footer>
+    </div>
+</body>
+</html>
